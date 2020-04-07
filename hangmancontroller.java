@@ -17,7 +17,7 @@ public class hangmancontroller {
         return true;
     }
     public int run(){
-        System.out.println("The game has started.");
+        System.out.println("The round has started.");
         String hiddenWord;
         try {
             hiddenWord = wordLex.getWord(currentWordCount);
@@ -31,20 +31,21 @@ public class hangmancontroller {
         for (int i = 0; i<hiddenWordLength; i++){
             isAlphaPresent[hiddenWord.charAt(i) - 65] = 1;
         }
-
+        Scanner reader = new Scanner(System.in);
         //main game loop
-        while(guesscount<=8 && gameOver==false){
-            System.out.println("Guesses left: " + (8-guesscount) + "\nPlease enter your guess. (an alphabet)");
+        while(guesscount<8 && gameOver==false){
+            System.out.println("Guesses left: " + (8-guesscount));
             for (int i = 0; i < hiddenWordLength; i++){
                 if(isAlphaPresent[hiddenWord.charAt(i) - 65]==1)
-                    System.out.printf("_");
+                    System.out.printf("_ ");
                 
                 else if(isAlphaPresent[hiddenWord.charAt(i) - 65]==2)
-                    System.out.printf("%c", hiddenWord.charAt(i));
+                    System.out.printf("%c ", hiddenWord.charAt(i));
             }
-            System.out.println(":");
-            Scanner reader = new Scanner(System.in);
-            char c = reader.next().charAt(0);
+            System.out.println("Please enter your guess. (an alphabet):");
+            
+            char c = reader.next().charAt(0); 
+            c = Character.toUpperCase(c);
             if(isAlphaPresent[c - 65] == 1 ){
                 System.out.println("Correct guess!");
                 isAlphaPresent[c - 65] = 2;
@@ -56,9 +57,8 @@ public class hangmancontroller {
                 guesscount++;
             }
             gameOver = isGameOver();
-            reader.close();
+            System.out.println("\n\n");
         }
-
         if(gameOver)
             System.out.println("Congrats, you have guessed the word correctly: " + hiddenWord);
         else   
@@ -66,8 +66,26 @@ public class hangmancontroller {
 
         return 0;
     }
+    public void setForNewRound() {
+        for(int i = 0; i<26; i++)
+            this.isAlphaPresent[i] = 0;
+        guesscount = 0;
+    }
     public static void main(String[] args) {
         hangmancontroller game = new hangmancontroller();
-        game.run();
+        Scanner read = new Scanner(System.in);
+        System.out.println("The game has started.");
+        while(game.currentWordCount < game.wordLex.getWordCount()){
+            game.run();
+            System.out.println("Do you want to play another round?('y' to answer yes)");
+            char c = read.next().charAt(0); 
+            // c = Character.toUpperCase(c);
+            
+            if(c != 'y')
+                break;
+            game.currentWordCount++;
+            game.setForNewRound();
+        }
+        read.close();
     }
 }
