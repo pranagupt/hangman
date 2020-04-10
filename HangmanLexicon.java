@@ -1,10 +1,9 @@
-
+// to modified to read from file
 public class HangmanLexicon {
     /** Returns the number of words in the lexicon. */
     public int getWordCount() {
         return 10;
     }
-
 
     /* Returns the word at the specified index. */
  

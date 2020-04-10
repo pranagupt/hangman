@@ -33,7 +33,7 @@ public class hangmancontroller {
         }
         Scanner reader = new Scanner(System.in);
         //main game loop
-        while(guesscount<8 && gameOver==false){
+        while(guesscount<8 && isGameOver()==false){
             System.out.println("Guesses left: " + (8-guesscount));
             for (int i = 0; i < hiddenWordLength; i++){
                 if(isAlphaPresent[hiddenWord.charAt(i) - 65]==1)
