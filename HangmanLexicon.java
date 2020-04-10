@@ -1,36 +1,39 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 // to modified to read from file
 public class HangmanLexicon {
+    ArrayList<String> words;
     /** Returns the number of words in the lexicon. */
+    HangmanLexicon(){
+        words = new ArrayList<String>();
+        try {
+            readWordFile("wordlist.txt");
+        } catch (Exception e) {
+            System.out.println("Can't read from file!");
+            System.exit(0);
+        }
+    }
     public int getWordCount() {
-        return 10;
+        return words.size();
     }
 
     /* Returns the word at the specified index. */
- 
-    public String getWord(int index) throws Exception {
-        switch (index) {
-            case 0:
-                return "BUOY";
-            case 1:
-                return "COMPUTER";
-            case 2:
-                return "CONNOISSEUR";
-            case 3:
-                return "DEHYDRATE";
-            case 4:
-                return "FUZZY";
-            case 5:
-                return "HUBBUB";
-            case 6:
-                return "KEYHOLE";
-            case 7:
-                return "QUAGMIRE";
-            case 8:
-                return "SLITHER";
-            case 9:
-                return "ZIRCON";
-            default:
-                throw new Exception("getWord: Illegal index");
+    private int readWordFile(String filename) throws Exception{
+        BufferedReader wordReader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
+        String word;
+        while ((word = wordReader.readLine()) != null) {
+            words.add(word);
         }
+        wordReader.close();
+        return 0;
+    }
+    public String getWord(int index) throws Exception {
+        if (index < getWordCount()){
+            return words.get(index);
+        }
+        throw new Exception();
     };
 }
